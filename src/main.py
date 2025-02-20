@@ -13,7 +13,6 @@ from utils import find_tag, get_response
 
 
 def whats_new(session):
-    # Вместо константы WHATS_NEW_URL, используйте переменную whats_new_url.
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
     response = get_response(session, whats_new_url)
     if response is None:
@@ -41,7 +40,7 @@ def whats_new(session):
         dl_text = dl.text.replace('\n', ' ')
 
         results.append(
-            (version_link, h1.text, dl_text)
+            (version_link, h1.text[:-1], dl_text)
         )
 
     return results
