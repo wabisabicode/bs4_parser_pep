@@ -124,11 +124,11 @@ def pep(session):
         abbr_tag = find_tag(pep, 'abbr')
         a_tag = find_tag(pep, 'a')
 
-        abbr = abbr_tag.text
+        preview_status = abbr_tag.text[1:]
         href = a_tag['href']
         pep_link = urljoin(MAIN_PEP_URL, href)
 
-        print(abbr, pep_link)
+        print(preview_status, pep_link)
 
 
 MODE_TO_FUNCTION = {
