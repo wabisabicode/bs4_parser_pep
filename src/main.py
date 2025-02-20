@@ -115,9 +115,20 @@ def pep(session):
 
     index_by_cat_tag = find_tag(soup, 'section', attrs={'id': 'index-by-category'})
     pep_rows = index_by_cat_tag.find_all('tr', attrs={'class': ['row-even', 'row-odd']})
-    print(pep_rows)
-    # results = []
 
+    for pep in tqdm(pep_rows):
+        # skip table headers - th
+        if pep.find('th'):
+            continue
+
+        abbr_tag = find_tag(pep, 'abbr')
+        a_tag = find_tag(pep, 'a')
+
+        abbr = abbr_tag.text
+        href = a_tag['href']
+        pep_link = urljoin(MAIN_PEP_URL, href)
+
+        print(abbr, pep_link)
 
 
 MODE_TO_FUNCTION = {
