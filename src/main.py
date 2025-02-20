@@ -135,13 +135,29 @@ def pep(session):
 
         status_tag = dl.find(string='Status')
         dd_tag = status_tag.find_next('dd')
+
+        if dd_tag.text not in EXPECTED_STATUS[preview_status]:
+            logging.info(
+                f'Несовпадающие статусы: {pep_link}\n'
+                f'Статус в карточке: {dd_tag.text}, '
+                f'Ожидаемые статусы: {EXPECTED_STATUS[preview_status]}'
+            )
+
         print(dd_tag.text)
 
         print(preview_status, pep_link)
 
 
-def next_to_status(tag):
-    return tag.next_element if tag.string == 'Status:' else None
+EXPECTED_STATUS = {
+    'A': ('Active', 'Accepted'),
+    'D': ('Deferred',),
+    'F': ('Final',),
+    'P': ('Provisional',),
+    'R': ('Rejected',),
+    'S': ('Superseded',),
+    'W': ('Withdrawn',),
+    '': ('Draft', 'Active'),
+}
 
 
 MODE_TO_FUNCTION = {
