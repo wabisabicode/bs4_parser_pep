@@ -128,7 +128,20 @@ def pep(session):
         href = a_tag['href']
         pep_link = urljoin(MAIN_PEP_URL, href)
 
+        response = get_response(session, pep_link)
+        soup = BeautifulSoup(response.text, features='lxml')
+        pep_content = find_tag(soup, 'section', attrs={'id': 'pep-content'})
+        dl = find_tag(pep_content, 'dl')
+
+        status_tag = dl.find(string='Status')
+        dd_tag = status_tag.find_next('dd')
+        print(dd_tag.text)
+
         print(preview_status, pep_link)
+
+
+def next_to_status(tag):
+    return tag.next_element if tag.string == 'Status:' else None
 
 
 MODE_TO_FUNCTION = {
