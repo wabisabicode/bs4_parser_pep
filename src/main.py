@@ -18,10 +18,8 @@ def whats_new(session):
 
     soup = get_soup_from_url(session, whats_new_url)
 
-    main_div = find_tag(soup, 'section', attrs={'id': 'what-s-new-in-python'})
-    div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
-    sections_by_python = div_with_ul.find_all(
-        'li', attrs={'class': 'toctree-l1'}
+    sections_by_python = soup.select(
+        '#what-s-new-in-python div.toctree-wrapper li.toctree-l1'
     )
 
     results = [('Ссылка на статью', 'Заголовок', 'Редактор, автор')]
