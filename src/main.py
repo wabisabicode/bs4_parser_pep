@@ -116,6 +116,7 @@ def pep(session):
     index_by_cat_tag = find_tag(soup, 'section', attrs={'id': 'index-by-category'})
     pep_rows = index_by_cat_tag.find_all('tr', attrs={'class': ['row-even', 'row-odd']})
 
+    dist_status = {}
     for pep in tqdm(pep_rows):
         # skip table headers - th
         if pep.find('th'):
@@ -136,16 +137,28 @@ def pep(session):
         status_tag = dl.find(string='Status')
         dd_tag = status_tag.find_next('dd')
 
-        if dd_tag.text not in EXPECTED_STATUS[preview_status]:
+        status = dd_tag.text
+
+        if status not in EXPECTED_STATUS[preview_status]:
             logging.info(
                 f'Несовпадающие статусы: {pep_link}\n'
                 f'Статус в карточке: {dd_tag.text}, '
                 f'Ожидаемые статусы: {EXPECTED_STATUS[preview_status]}'
             )
 
-        print(dd_tag.text)
+        dist_status[status] = dist_status.get(status, 0) + 1
 
-        print(preview_status, pep_link)
+    results = [('Статус', 'Количество')]
+    total_count = 0
+
+    for status, count in dist_status.items():
+        total_count += count
+        results.append(
+            (status, count)
+        )
+    results.append(('Total', total_count))
+
+    return results
 
 
 EXPECTED_STATUS = {
