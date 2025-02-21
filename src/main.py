@@ -10,16 +10,13 @@ from configs import configure_argument_parser, configure_logging
 from constants import BASE_DIR, EXPECTED_STATUS, MAIN_DOC_URL, MAIN_PEP_URL
 from exceptions import VersionNotFoundException
 from outputs import control_output
-from utils import find_tag, get_response
+from utils import find_tag, get_response, get_soup_from_url
 
 
 def whats_new(session):
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
-    response = get_response(session, whats_new_url)
-    if response is None:
-        return
 
-    soup = BeautifulSoup(response.text, features='lxml')
+    soup = get_soup_from_url(session, whats_new_url)
 
     main_div = find_tag(soup, 'section', attrs={'id': 'what-s-new-in-python'})
     div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
