@@ -47,11 +47,7 @@ def whats_new(session):
 
 
 def latest_versions(session):
-    response = get_response(session, MAIN_DOC_URL)
-    if response is None:
-        return
-
-    soup = BeautifulSoup(response.text, features='lxml')
+    soup = get_soup_from_url(session, MAIN_DOC_URL)
 
     sidebar = find_tag(soup, 'div', attrs={'class': 'sphinxsidebarwrapper'})
     ul_tags = sidebar.find_all('ul')
@@ -83,9 +79,8 @@ def latest_versions(session):
 
 def download(session):
     downloads_url = urljoin(MAIN_DOC_URL, 'download.html')
-    response = session.get(downloads_url)
 
-    soup = BeautifulSoup(response.text, features='lxml')
+    soup = get_soup_from_url(session, downloads_url)
 
     table_tag = find_tag(soup, 'table', attrs={'class': 'docutils'})
     pdf_a4_tag = find_tag(
@@ -111,9 +106,7 @@ def download(session):
 
 
 def pep(session):
-    response = get_response(session, MAIN_PEP_URL)
-
-    soup = BeautifulSoup(response.text, features='lxml')
+    soup = get_soup_from_url(session, MAIN_PEP_URL)
 
     index_by_cat_tag = find_tag(
         soup, 'section', attrs={'id': 'index-by-category'}
@@ -134,9 +127,8 @@ def pep(session):
         preview_status = abbr_tag.text[1:]
         href = a_tag['href']
         pep_link = urljoin(MAIN_PEP_URL, href)
+        soup = get_soup_from_url(session, pep_link)
 
-        response = get_response(session, pep_link)
-        soup = BeautifulSoup(response.text, features='lxml')
         pep_content = find_tag(soup, 'section', attrs={'id': 'pep-content'})
         dl = find_tag(pep_content, 'dl')
 
