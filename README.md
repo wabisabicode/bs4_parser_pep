@@ -51,13 +51,13 @@ python main.py <режим> [-o <output>]
 # Проверить обновления в версиях Python и вывести в терминале
 python main.py whats-new -o pretty
 
-# Получить список последних версий Python
+# Получить список последних версий Python и сохранить в файл
 python main.py latest-versions -o file
 
 # Скачать документацию последней версии Python и сохранить в файл
 python main.py download
 
-# Проверить статусы всех PEP и вывести в таблице
+# Проверить статусы всех PEP и вывести в таблице в терминале
 python main.py pep -o pretty
 ```
 
