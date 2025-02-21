@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 from configs import configure_argument_parser, configure_logging
 from constants import BASE_DIR, EXPECTED_STATUS, MAIN_DOC_URL, MAIN_PEP_URL
+from exceptions import VersionNotFoundException
 from outputs import control_output
 from utils import find_tag, get_response
 
@@ -63,7 +64,7 @@ def latest_versions(session):
             a_tags = ul.find_all('a')
             break
     else:
-        raise Exception('Ничего не нашлось')
+        raise VersionNotFoundException('Ничего не нашлось')
 
     results = [('Ссылка на документацию', 'Версия', 'Статус')]
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
@@ -157,13 +158,9 @@ def pep(session):
         dist_status[status] = dist_status.get(status, 0) + 1
 
     results = [('Статус', 'Количество')]
-    total_count = 0
+    results.extend(dist_status.items())
 
-    for status, count in dist_status.items():
-        total_count += count
-        results.append(
-            (status, count)
-        )
+    total_count = sum(dist_status.values())
     results.append(('Total', total_count))
 
     return results
