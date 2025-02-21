@@ -87,7 +87,7 @@ def download(session):
 
     soup = BeautifulSoup(response.text, features='lxml')
 
-    table_tag = find_tag(soup, 'table', class_='docutils')
+    table_tag = find_tag(soup, 'table', attrs={'class': 'docutils'})
     pdf_a4_tag = find_tag(table_tag, 'a', {'href': re.compile(r'.+pdf-a4\.zip$')})
     pdf_a4_link = pdf_a4_tag['href']
 
