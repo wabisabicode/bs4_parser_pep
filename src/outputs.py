@@ -24,15 +24,11 @@ def default_output(results):
 
 
 def pretty_output(results):
-    # Инициализируем объект PrettyTable.
     table = PrettyTable()
-    # В качестве заголовков устанавливаем первый элемент списка.
     table.field_names = results[0]
-    # Выравниваем всю таблицу по левому краю.
     table.align = 'l'
-    # Добавляем все строки, начиная со второй (с индексом 1).
     table.add_rows(results[1:])
-    # Печатаем таблицу.
+
     print(table)
 
 
